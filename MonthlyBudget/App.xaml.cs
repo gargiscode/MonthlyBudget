@@ -11,6 +11,7 @@ namespace MonthlyBudget
             InitializeComponent();
 
             MainPage = new MainPage();
+            //MonthlyGoalPage = new MonthlyGoalPage();
         }
 
         protected override void OnStart()

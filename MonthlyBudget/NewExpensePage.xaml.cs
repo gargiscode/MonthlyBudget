@@ -15,6 +15,7 @@ namespace MonthlyBudget
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewExpensePage : ContentPage
     {
+        List<Category> categoryList;
         public NewExpensePage()
         {
             InitializeComponent();
@@ -23,11 +24,14 @@ namespace MonthlyBudget
         protected override void OnAppearing()
         {
             var exp = (Expense)BindingContext;
-            
-            if (!string.IsNullOrEmpty(exp.FileName))
-            {
-                
-            }
+            categoryList = new List<Category>();
+            Category.InitializeCategory(categoryList);
+            CategoryPicker.ItemsSource = categoryList;
+
+            //if (!string.IsNullOrEmpty(exp.FileName))
+            //{
+
+            //}
         }
         private async void OnSaveButtonClicked(object sender, EventArgs e)
         {
@@ -39,42 +43,68 @@ namespace MonthlyBudget
 
                 randomFileName = Path.Combine(Environment.GetFolderPath(
                     Environment.SpecialFolder.LocalApplicationData),
-                    $"{Path.GetRandomFileName()}.exp.txt"
-                    );
+                    $"{Path.GetRandomFileName()}.exp.txt");
+
                 exp.FileName = randomFileName;
                 exp.Amount = AmountEditor.Text;
                 exp.Name = NameEditor.Text;
-                exp.Date = File.GetCreationTime(randomFileName);
-                int categoryIndex = CategoryPicker.SelectedIndex;
+                exp.Date = DatePickerBox.Date.Date;
+                string categoryName = CategoryPicker.SelectedItem.ToString();
+
+                //List<Category> categoryList = new List<Category>();
+                Category.InitializeCategory(categoryList);
+
+                foreach (var cat in categoryList)
+                {
+                    if (categoryName == cat.Name)
+                    {
+                        exp.CategoryImage = cat.ImageFile;
+                        break;
+                    }
+                }
+
+                /*
                 switch(categoryIndex)
                 {
                     case 0:
                         {
                             exp.Category = "Grocery"; 
-                            exp.CategoryImage = "/Assets/grocery.png";
+                            exp.CategoryImage = "grocery.bmp";
                             break;
                         }
                     case 1:
                         {
-                            exp.Category = "Utilities";
-                            exp.CategoryImage = "/Assets/utilities.png";
+                            exp.Category = "Utility Bills";
+                            exp.CategoryImage = "utility.bmp";
                             break;
                         }
                     case 2:
                         {
-                            exp.Category = "Travel";
-                            exp.CategoryImage = "/Assets/travel.png";
+                            exp.Category = "Mortgage";
+                            exp.CategoryImage = "mortgage.bmp";
                             break;
                         }
                     case 3:
                         {
-                            exp.Category = "Classes";
-                            exp.CategoryImage = "/Assets/classes.png";
+                            exp.Category = "Acitivities";
+                            exp.CategoryImage = "activities.bmp";
+                            break;
+                        }
+                    case 4:
+                        {
+                            exp.Category = "Travel";
+                            exp.CategoryImage = "travel.bmp";
+                            break;
+                        }
+                    case 5:
+                        {
+                            exp.Category = "Miscellaneous";
+                            exp.CategoryImage = "misc.bmp";
                             break;
                         }
                 }
+                */
 
-                //File.Create(exp.FileName);
                 string writeToFile = JsonConvert.SerializeObject(exp);
                 File.WriteAllText(randomFileName, writeToFile);
 
@@ -83,9 +113,9 @@ namespace MonthlyBudget
             await Navigation.PopModalAsync();
         }
 
-        private void OnCancelButtonClicked(object sender, EventArgs e)
+        private async void OnCancelButtonClicked(object sender, EventArgs e)
         {
-
+            await Navigation.PopModalAsync();
         }
     }
 }

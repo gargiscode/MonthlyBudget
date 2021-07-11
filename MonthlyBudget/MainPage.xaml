@@ -1,34 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:model="clr-namespace:MonthlyBudget.Models"
+             xmlns:local="clr-namespace:MonthlyBudget"
              x:Class="MonthlyBudget.MainPage">
 
     <StackLayout>
-        <!--<Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Welcome to Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
-        </Frame>
-        <Label Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
-        <Label Text="Make changes to your XAML file and save to see your UI update in the running app with XAML Hot Reload. Give it a try!" FontSize="16" Padding="30,0,30,0"/>
-        <Label FontSize="16" Padding="30,24,30,0">
-            <Label.FormattedText>
-                <FormattedString>
-                    <FormattedString.Spans>
-                        <Span Text="Learn more at "/>
-                        <Span Text="https://aka.ms/xamarin-quickstart" FontAttributes="Bold"/>
-                    </FormattedString.Spans>
-                </FormattedString>
-            </Label.FormattedText>
-        </Label>-->
-        <Button Text="Add Expense" Clicked="OnAddExpenseButtonClicked"/>
+
+        <Label x:Name="BudgetLabel" Text="Monthly Goal" />
+        <Editor x:Name="BudgetEditor" Placeholder="Enter the budget for this month"/>
+        <Button x:Name="SaveBudgetButton" Text="Save" Clicked="OnSaveBudgetButtonClicked" HorizontalOptions="Center"/>
+
+        
+        <Button x:Name="AddExpenseButton"  Text="Add Expense" Clicked="OnAddExpenseButtonClicked"/>
         <ListView x:Name="ExpenseListView"
                   ItemSelected="OnExpenseItemSelected"
-                  HeightRequest="500"
-                  WidthRequest="500">
+                  HeightRequest="900"
+                  WidthRequest="900">
+            
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Expense">
-                    <ImageCell ImageSource="{Binding CategoryImage}" Text="{Binding Name}" Detail="{Binding Amount}" Height="100"></ImageCell>
-                    <!--<TextCell Text="{Binding Name}" Detail="{Binding Amount}" />-->
-                    
+                    <ViewCell>
+                        <ViewCell.View>
+                            <StackLayout Orientation="Horizontal">
+                                <Image>
+                                    <Image.Source>
+                                        <FileImageSource File="mortgage.bmp" />
+                                    </Image.Source>
+                                </Image>
+                                
+                                <Label Text="{Binding Name}" TextColor="Blue" />
+                                <Label Text="{Binding Amount}" TextColor="Green" />
+                                <Label Text="{Binding Date}" TextColor="Red" />
+                            </StackLayout>
+                        </ViewCell.View>
+                    </ViewCell>
+
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

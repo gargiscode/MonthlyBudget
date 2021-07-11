@@ -21,34 +21,39 @@ namespace MonthlyBudget
         protected override void OnAppearing()
         {
             var expenseList = new List<Expense>();
-
+            string thisMonth = DateTime.Now.ToString("MMMM");
             var budgetFileName = Path.Combine(Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData),"JulyBudget.txt");
+                    Environment.SpecialFolder.LocalApplicationData),$"{thisMonth}"+"Budget.txt");
             var files = Directory.EnumerateFiles(
                 Environment.GetFolderPath(
                     Environment.SpecialFolder.LocalApplicationData), "*.exp.txt");
             //decimal budgetValue = 0.0M;
             string budgetStr = string.Empty;
-
-            /*
+                     
             if (File.Exists(budgetFileName))
             {
                 budgetStr = File.ReadAllText(budgetFileName);
             }
             else
             {
-                File.Create(budgetFileName);
-                File.WriteAllText(budgetFileName,"500");
+                File.WriteAllText(budgetFileName,BudgetEditor.Text);
             }
-            */
-            budgetStr = "500";
-            if (string.IsNullOrEmpty(budgetStr))
-            { 
-                //Implement later
+            
 
+            if (string.IsNullOrEmpty(budgetStr))
+            {
+                //Implement later
+                ExpenseListView.IsVisible = false;
+                AddExpenseButton.IsVisible = false;
             }
             else
             {
+                BudgetLabel.IsVisible = false;
+                BudgetEditor.IsVisible = false;
+                SaveBudgetButton.IsVisible = false;
+                ExpenseListView.IsVisible = true;
+                AddExpenseButton.IsVisible = true;
+                
                 foreach (var filename in files)
                 {
                     string readStr = File.ReadAllText(filename);
@@ -69,6 +74,24 @@ namespace MonthlyBudget
 
         private void OnExpenseItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+
+        }
+
+        private void OnSaveBudgetButtonClicked(object sender, EventArgs e)
+        {
+            string thisMonth = DateTime.Now.ToString("MMMM");
+            var budgetFileName = Path.Combine(Environment.GetFolderPath(
+                    Environment.SpecialFolder.LocalApplicationData), $"{thisMonth}" + "Budget.txt");
+
+            if (File.Exists(budgetFileName))
+            {
+                File.WriteAllText(budgetFileName, BudgetEditor.Text);
+            }
+
+            BudgetEditor.IsVisible = false;
+            BudgetLabel.IsVisible = false;
+            SaveBudgetButton.IsVisible = false;
+            ExpenseListView.IsVisible = true;
 
         }
     }
