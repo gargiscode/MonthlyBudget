@@ -27,13 +27,6 @@ namespace MonthlyBudget
             categoryList = new List<Category>();
             Category.InitializeCategory(categoryList);
             CategoryPicker.ItemsSource = categoryList;
-
-            //string thisMonth = DateTime.Now.ToString("MMMM");
-            //DatePickerBox.MinimumDate = DateTime.Now.
-            //if (!string.IsNullOrEmpty(exp.FileName))
-            //{
-
-            //}
         }
         private async void OnSaveButtonClicked(object sender, EventArgs e)
         {
@@ -82,16 +75,7 @@ namespace MonthlyBudget
 
                 //List<Category> categoryList = new List<Category>();
                 Category.InitializeCategory(categoryList);
-/*
-                foreach (var cat in categoryList)
-                {
-                    if (categoryName == cat.Name)
-                    {
-                        exp.CategoryImage = cat.ImageFile;
-                        break;
-                    }
-                }
-*/
+
  
                 string writeToFile = JsonConvert.SerializeObject(exp);
                 File.WriteAllText(randomFileName, writeToFile);

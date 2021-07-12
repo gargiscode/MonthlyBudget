@@ -12,7 +12,7 @@ namespace MonthlyBudget.Models
         public static void InitializeCategory(List<Category> categoryList)
         {
             categoryList.Add(new Category { Name= "Grocery", ImageFile="grocery.bmp" });
-            categoryList.Add(new Category { Name = "Utilities", ImageFile = "utitlity.bmp" });
+            categoryList.Add(new Category { Name = "Utilities", ImageFile = "utility.bmp" });
             categoryList.Add(new Category { Name = "Mortgage", ImageFile = "mortgage.bmp" });
             categoryList.Add(new Category { Name = "Travel", ImageFile = "travel.bmp" }); 
             categoryList.Add(new Category { Name = "Activities", ImageFile = "activities.bmp" });
