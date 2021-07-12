@@ -28,6 +28,8 @@ namespace MonthlyBudget
             Category.InitializeCategory(categoryList);
             CategoryPicker.ItemsSource = categoryList;
 
+            //string thisMonth = DateTime.Now.ToString("MMMM");
+            //DatePickerBox.MinimumDate = DateTime.Now.
             //if (!string.IsNullOrEmpty(exp.FileName))
             //{
 
@@ -38,7 +40,7 @@ namespace MonthlyBudget
             var exp = (Expense)BindingContext;
             if (string.IsNullOrEmpty(exp.FileName))
             {
-                //Create a new file
+                //Create a new file to write the expense
                 string randomFileName;
 
                 randomFileName = Path.Combine(Environment.GetFolderPath(
@@ -46,14 +48,41 @@ namespace MonthlyBudget
                     $"{Path.GetRandomFileName()}.exp.txt");
 
                 exp.FileName = randomFileName;
-                exp.Amount = AmountEditor.Text;
+
+                //Error Handling for user input
+                if (string.IsNullOrEmpty(NameEditor.Text))
+                {
+                    await DisplayAlert("Error Saving Expense", "Store Name can not be empty", "OK");
+                    return;
+                }
                 exp.Name = NameEditor.Text;
+
+                //Convert string input to double
+                double temp;
+                if (!double.TryParse(AmountEditor.Text, out temp))
+                {
+                    await DisplayAlert("Error Saving Expense", "Amount Spent should be a decimal number", "OK");
+                    return;
+                }
+                exp.Amount = temp;
+                
+                if(string.IsNullOrEmpty(CategoryPicker.SelectedItem.ToString()))
+                {
+                    await DisplayAlert("Error Saving Expense", "Category field can not be empty", "OK");
+                    return;
+                }
+
+                // Get the corresponding image file for the selected category
+                int catIndex = CategoryPicker.SelectedIndex;
+                string categoryName = categoryList.ElementAt(catIndex).Name;
+                exp.CategoryImage = categoryList.ElementAt(catIndex).ImageFile;
+
                 exp.Date = DatePickerBox.Date.Date;
-                string categoryName = CategoryPicker.SelectedItem.ToString();
+                
 
                 //List<Category> categoryList = new List<Category>();
                 Category.InitializeCategory(categoryList);
-
+/*
                 foreach (var cat in categoryList)
                 {
                     if (categoryName == cat.Name)
@@ -62,49 +91,8 @@ namespace MonthlyBudget
                         break;
                     }
                 }
-
-                /*
-                switch(categoryIndex)
-                {
-                    case 0:
-                        {
-                            exp.Category = "Grocery"; 
-                            exp.CategoryImage = "grocery.bmp";
-                            break;
-                        }
-                    case 1:
-                        {
-                            exp.Category = "Utility Bills";
-                            exp.CategoryImage = "utility.bmp";
-                            break;
-                        }
-                    case 2:
-                        {
-                            exp.Category = "Mortgage";
-                            exp.CategoryImage = "mortgage.bmp";
-                            break;
-                        }
-                    case 3:
-                        {
-                            exp.Category = "Acitivities";
-                            exp.CategoryImage = "activities.bmp";
-                            break;
-                        }
-                    case 4:
-                        {
-                            exp.Category = "Travel";
-                            exp.CategoryImage = "travel.bmp";
-                            break;
-                        }
-                    case 5:
-                        {
-                            exp.Category = "Miscellaneous";
-                            exp.CategoryImage = "misc.bmp";
-                            break;
-                        }
-                }
-                */
-
+*/
+ 
                 string writeToFile = JsonConvert.SerializeObject(exp);
                 File.WriteAllText(randomFileName, writeToFile);
 

@@ -5,11 +5,13 @@
              x:Class="MonthlyBudget.MainPage">
 
     <StackLayout>
-
+        <StackLayout>
+            <Grid>
         <Label x:Name="BudgetLabel" Text="Monthly Goal" />
         <Editor x:Name="BudgetEditor" Placeholder="Enter the budget for this month"/>
         <Button x:Name="SaveBudgetButton" Text="Save" Clicked="OnSaveBudgetButtonClicked" HorizontalOptions="Center"/>
-
+            </Grid>
+        </StackLayout>
         
         <Button x:Name="AddExpenseButton"  Text="Add Expense" Clicked="OnAddExpenseButtonClicked"/>
         <ListView x:Name="ExpenseListView"
@@ -24,13 +26,13 @@
                             <StackLayout Orientation="Horizontal">
                                 <Image>
                                     <Image.Source>
-                                        <FileImageSource File="mortgage.bmp" />
+                                        <FileImageSource File="{Binding CategoryImage}" />
                                     </Image.Source>
                                 </Image>
                                 
                                 <Label Text="{Binding Name}" TextColor="Blue" />
-                                <Label Text="{Binding Amount}" TextColor="Green" />
-                                <Label Text="{Binding Date}" TextColor="Red" />
+                                <Label Text="{Binding Amount, StringFormat='${0:N}'}" TextColor="Green" />
+                                <Label Text="{Binding Date, StringFormat='{0:MM/dd/yyyy}'}" TextColor="Red" />
                             </StackLayout>
                         </ViewCell.View>
                     </ViewCell>

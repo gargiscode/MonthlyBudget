@@ -20,7 +20,7 @@
                 >
             </Picker>
             
-            <DatePicker x:Name="DatePickerBox" Format="D" HeightRequest="50">
+            <DatePicker x:Name="DatePickerBox" Format="D" HeightRequest="50" MinimumDate="06/01/2021" MaximumDate="07/30/2021">
 
             </DatePicker>
 

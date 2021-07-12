@@ -42,7 +42,6 @@ namespace MonthlyBudget
 
             if (string.IsNullOrEmpty(budgetStr))
             {
-                //Implement later
                 ExpenseListView.IsVisible = false;
                 AddExpenseButton.IsVisible = false;
             }
